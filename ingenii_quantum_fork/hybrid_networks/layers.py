@@ -40,7 +40,7 @@ class QuantumFunction2D(Function):
         """
         Forward pass computation
             data: tensor (n_samples, num_features,N,N,N). Input data
-            qc_class: QuantumFilters3D object
+            qc_class: QuantumFilters2D object
             use_cuda: Pytorch device (cpu, cuda)
             tol: tolerance for the masking matrix. All values from the original
             data which are smaller than the tolerance are set to 0.
@@ -106,7 +106,7 @@ class QuantumLayer2D(torch.nn.Module):  # QuantumFilters2D):
             saved_gates_filename='gates_list.pickle',
             saved_qubits_filename='qubits_list.pickle'):
         """
-        Creates the QuantumFilters3D class, generates/loads the unitaries.
+        Creates the QuantumFilters2D class, generates/loads the unitaries.
         """
         super(QuantumLayer2D, self).__init__()
         self.qc_class = QuantumFilters2D(shape,  stride, shots, backend)
@@ -223,7 +223,7 @@ class QuantumLayer3D(nn.Module):
         " set n=2^l"
     }
     optional_parameters = {
-        "num_filters": "Number of quantum features applied to each of the "
+        "num_filters": "Number of quantum filters applied to each of the "
         "features of the data. If the input data has shape "
         "(n_samples,C,N,N,N), the output data has shape "
         "(n_samples, C*num_filters,N,N,N)",

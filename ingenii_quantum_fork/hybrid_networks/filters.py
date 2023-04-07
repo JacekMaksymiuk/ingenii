@@ -9,7 +9,7 @@ from qiskit import opflow
 
 import numpy as np
 import pickle
-from random import sample
+from random import sample, choices
 import torch
 
 from .utils import roll_numpy, roll_torch
@@ -60,22 +60,17 @@ class QuantumFiltersBase():
         """
         # Select random gate
         gates = self.gate_names[gates_name]
-        gates_set = [sample(gates, 1)[0] for _ in range(num_gates)]
+        gates_set = choices(gates, k=num_gates)
 
         qubit_idx = list(range(self.nqbits))
 
         def _add_qubit_set(gate):
             if gate == 'CNOT':
                 # Select qubit 1 and 2 (different qubits)
-                qbit1 = sample(qubit_idx, 1)[0]
-                qubit_idx2 = qubit_idx.copy()
-                qubit_idx2.remove(qbit1)
-                qbit2 = sample(qubit_idx2, 1)[0]
-                return [qbit1, qbit2]
+                return sample(qubit_idx, 2)
             else:
                 # Select qubit
-                qbit = sample(qubit_idx, 1)[0]
-                return [qbit]
+                return sample(qubit_idx, 1)
 
         # Store qubit list of applied gates
         qubits_set = [
